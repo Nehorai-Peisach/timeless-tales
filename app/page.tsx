@@ -1,5 +1,6 @@
 'use client'
 import { useState } from "react";
+import s from './style.module.scss';
 
 export default function UploadPage() {
   const [formData, setFormData] = useState({
@@ -46,55 +47,60 @@ export default function UploadPage() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "500px", margin: "0 auto" }}>
-      <h1>Upload Form</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
+    <div className={s.wrapper}>
+      <div className={s.contentWrapper}>
 
-        <div>
-          <label htmlFor="content">Content:</label>
-          <textarea
-            id="content"
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </div>
+        <h1>Upload Form</h1>
+        <form className={s.form} onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">Email:</label>
+            <input
+              className={s.input}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <div>
-          <label htmlFor="image">Image:</label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            onChange={handleChange}
-            required
-          />
-        </div>
+          <div>
+            <label htmlFor="content">Content:</label>
+            <textarea
+              className={s.input}
+              id="content"
+              name="content"
+              value={formData.content}
+              onChange={handleChange}
+              required
+            ></textarea>
+          </div>
 
-        <button type="submit">Submit</button>
-      </form>
-      {message && <p>{message}</p>}
-      {filePath && (
-        <button
-          onClick={() => window.open(filePath, "_blank")}
-          style={{ marginTop: "10px" }}
-        >
-          Open Uploaded File
-        </button>
-      )}
+          <div>
+            <label htmlFor="image">Image:</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit">Submit</button>
+        </form>
+        {message && <p>{message}</p>}
+        {filePath && (
+          <button
+            onClick={() => window.open(filePath, "_blank")}
+            style={{ marginTop: "10px" }}
+          >
+            Open Uploaded File
+          </button>
+        )}
+      </div>
     </div>
   );
 }
