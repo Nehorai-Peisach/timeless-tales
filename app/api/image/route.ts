@@ -6,7 +6,7 @@ import { dbPromise } from "@/lib/database";
 
 const baseFolder = '/uploads'
 
-export const POST = async (req: NextRequest) => {
+export async function POST(req: NextRequest) {
     const data = await req.formData();
 
     const user = data.get("user") as string;
