@@ -45,3 +45,4 @@ next-env.d.ts
 
 #folders
 public/uploads
+.env*.local

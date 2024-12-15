@@ -35,7 +35,7 @@ export default function UploadPage() {
       if (response.ok) {
         const result = await response.json();
         setMessage("Form submitted successfully!");
-        setFilePath(result.path || "");
+        setFilePath(result.url || "");
         setFormData({ email: "", content: "", image: null });
       } else {
         setMessage("Failed to submit form.");
