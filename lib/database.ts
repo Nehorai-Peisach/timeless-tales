@@ -14,7 +14,7 @@ export async function initializeDatabase() {
     CREATE TABLE IF NOT EXISTS images (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user TEXT NOT NULL,
-      path TEXT NOT NULL,
+      blob TEXT NOT NULL,
       content TEXT NULL,
       uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )

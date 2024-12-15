@@ -3,6 +3,7 @@ import { join } from "path";
 import { stat, mkdir, writeFile } from "fs/promises";
 import mime from "mime";
 import { dbPromise } from "@/lib/database";
+import { put } from "@vercel/blob";
 
 const baseFolder = '/uploads'
 
@@ -32,44 +33,42 @@ export async function POST(req: NextRequest) {
     const uploadDir = join(process.cwd(), 'public', dir);
 
     //Manege folder
-    try {
-        await stat(uploadDir);
-    } catch (e: any) {
-        if (e.code === "ENOENT") {
-            await mkdir(uploadDir, { recursive: true });
-        } else {
-            console.error("Error while trying to create directory when uploading a file\n", e);
-            return NextResponse.json(
-                { error: "Something went wrong." },
-                { status: 500 }
-            );
-        }
-    }
+    // try {
+    //     await stat(uploadDir);
+    // } catch (e: any) {
+    //     if (e.code === "ENOENT") {
+    //         await mkdir(uploadDir, { recursive: true });
+    //     } else {
+    //         console.error("Error while trying to create directory when uploading a file\n", e);
+    //         return NextResponse.json(
+    //             { error: "Something went wrong." },
+    //             { status: 500 }
+    //         );
+    //     }
+    // }
 
     //Save file
     try {
         const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
         const filename = `${uniqueName}.${mime.getExtension(image.type)}`
-        await writeFile(`${uploadDir}/${filename}`, buffer);
+        // await writeFile(`${uploadDir}/${filename}`, buffer);
+        const blob = await put(filename, buffer, {
+            access: 'public',
+        });
 
         // Save to database
-        const path = `${dir}/${filename}`;
+        // const path = `${dir}/${filename}`;
         const db = await dbPromise;
 
         await db.run(
             'INSERT INTO images (user, path, content, uploaded_at) VALUES (?, ?, ?, ?)',
             user,
-            path,
+            blob,
             content,
             new Date()
         );
 
-        return NextResponse.json({
-            user,
-            path,
-            content,
-            created_at: new Date()
-        });
+        return NextResponse.json(blob);
     } catch (e) {
         console.error("Error while trying to upload a file\n", e);
         return NextResponse.json(
